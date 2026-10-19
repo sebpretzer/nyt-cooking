@@ -26,12 +26,16 @@ jobs:
               - 'tests/**'
               - '.pre-commit-config.yaml'
               - 'Makefile'
+              - 'docs/**'
+              - 'zensical.toml'
               - 'pyproject.toml'
               - 'uv.lock'
             test:
               - 'src/nyt_cooking/**'
               - 'tests/**'
               - 'Makefile'
+              - 'docs/**'
+              - 'zensical.toml'
               - 'pyproject.toml'
               - 'uv.lock'
 

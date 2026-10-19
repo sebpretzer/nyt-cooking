@@ -20,3 +20,9 @@ test: install
 build: install
 	rm -rf dist/
 	uv build
+
+zensical-dev:
+	uv run zensical serve --strict
+
+zensical-check:
+	uv run zensical build --clean --strict

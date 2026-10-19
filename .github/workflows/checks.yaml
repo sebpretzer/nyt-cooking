@@ -1,0 +1,58 @@
+name: checks
+on: [pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      lint: ${{ steps.filter.outputs.lint }}
+      test: ${{ steps.filter.outputs.test }}
+    steps:
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          filters: |
+            lint:
+              - 'src/nyt_cooking/**'
+              - 'tests/**'
+              - '.pre-commit-config.yaml'
+              - 'Makefile'
+              - 'pyproject.toml'
+              - 'uv.lock'
+            test:
+              - 'src/nyt_cooking/**'
+              - 'tests/**'
+              - 'Makefile'
+              - 'pyproject.toml'
+              - 'uv.lock'
+
+  lint:
+    needs: changes
+    if: ${{ needs.changes.outputs.lint == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install uv, python, and dependencies
+        run: make install-all
+      - name: Run linting via pre-commit
+        run: make lint
+
+  test:
+    needs: [changes, lint]
+    if: ${{ needs.changes.outputs.test == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install uv, python, and dependencies
+        run: make install-all
+      - name: Run tests
+        run: make test

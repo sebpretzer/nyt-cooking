@@ -1,0 +1,73 @@
+[project]
+name = "nyt-cooking"
+version = "0.1.0"
+description = "NYT Cooking Client and MCP server"
+authors = [{ name = "Seb Pretzer", email = "quick.creek3304@fastmail.com" }]
+license = { file = "LICENSE" }
+requires-python = ">=3.13, <3.15"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "fastmcp>=4,<5",
+    "httpx>=0.28.1",
+    "keyring>=25.7.0",
+    "pydantic-settings>=2.13.1",
+    "typer>=0.20.1",
+]
+
+[project.urls]
+Repository = "https://github.com/sebpretzer/nyt-cooking"
+Issues = "https://github.com/sebpretzer/nyt-cooking/issues"
+
+[project.scripts]
+nyt-cooking-mcp = "nyt_cooking.mcp.server:mcp.run"
+
+[build-system]
+requires = ["uv_build>=0.9.0,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.1.0",
+    "pytest>=9.0.2",
+    "pytest-cov>=6.0.0",
+    "ruff>=0.11.2",
+    "ty>=0.0.11",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.ruff]
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D100", "CPY001", "D104", "ISC001"]
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 88
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN", "D", "INP", "S101", "S311", "SLF001"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 20
+
+[tool.ty.environment]
+python = ".venv"
+
+[tool.coverage.run]
+relative_files = true
+
+[tool.coverage.report]
+exclude_also = ["if TYPE_CHECKING:"]

@@ -1,0 +1,35 @@
+query RecipeComments($uri: String!, $input: CommunityCommentPagingInput!) {
+  communityComments(uri: $uri, input: $input) {
+    summary {
+      totalCount
+      totalReadersPicks
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        comment {
+          ...RecipeCommentFields
+        }
+        replies {
+          ...RecipeCommentFields
+        }
+      }
+    }
+  }
+}
+
+fragment RecipeCommentFields on CommunityComment {
+  id
+  text
+  submittedAt
+  recommendedCount
+  author {
+    name
+    location
+    title
+    isReporter
+  }
+}

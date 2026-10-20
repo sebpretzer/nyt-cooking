@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "NYT Cooking Client and MCP server"
 authors = [{ name = "Seb Pretzer", email = "quick.creek3304@fastmail.com" }]
 license = { file = "LICENSE" }
+readme = "README.md"
 requires-python = ">=3.13, <3.15"
 classifiers = [
     "Programming Language :: Python :: 3",

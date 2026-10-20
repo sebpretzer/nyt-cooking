@@ -34,8 +34,6 @@ jobs:
               - 'src/nyt_cooking/**'
               - 'tests/**'
               - 'Makefile'
-              - 'docs/**'
-              - 'zensical.toml'
               - 'pyproject.toml'
               - 'uv.lock'
 

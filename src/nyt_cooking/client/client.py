@@ -118,7 +118,14 @@ class Client:
         exc: BaseException | None,
         traceback: TracebackType | None,
     ) -> None:
-        """Close the client when the `with` block exits."""
+        """Close the client when the `with` block exits.
+
+        Args:
+            exc_type (type[BaseException] | None): The exception's type, if one was
+                raised in the block.
+            exc (BaseException | None): The exception, if one was raised.
+            traceback (TracebackType | None): The exception's traceback, if any.
+        """
         self.close()
 
     def close(self) -> None:

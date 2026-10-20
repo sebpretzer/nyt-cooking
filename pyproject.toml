@@ -27,17 +27,17 @@ Issues = "https://github.com/sebpretzer/nyt-cooking/issues"
 nyt-cooking-mcp = "nyt_cooking.mcp.server:mcp.run"
 
 [build-system]
-requires = ["uv_build>=0.9.0,<0.10.0"]
+requires = ["uv_build>=0.13.1,<0.14.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "griffe-pydantic>=1.0.0",
+    "mkdocstrings[python]>=0.28.1",
     "pre-commit>=4.1.0",
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
     "ruff>=0.11.2",
-    "griffe-pydantic>=1.0.0",
-    "mkdocstrings[python]>=0.28.1",
     "ty>=0.0.11",
     "zensical>=0.0.60",
 ]
@@ -50,7 +50,11 @@ target-version = "py313"
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D100", "CPY001", "D104", "ISC001"]
+preview = true
+explicit-preview-rules = true
+extend-select = ["DOC201", "DOC202", "DOC402", "DOC403", "DOC501"]
+external = ["DOC"]
+ignore = ["COM812", "CPY001", "D100", "D104", "ISC001"]
 
 [tool.ruff.lint.pycodestyle]
 max-doc-length = 88
@@ -62,10 +66,33 @@ convention = "google"
 docstring-code-format = true
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["ANN", "D", "INP", "S101", "S311", "SLF001"]
+"tests/**" = ["ANN", "D", "DOC", "INP", "S101", "S311", "SLF001"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 20
+
+[tool.flake8]
+style = "google"
+exclude = "tests/"
+select = ["DOC", "PYD"]
+ignore = [
+    "DOC105",
+    "DOC201",
+    "DOC202",
+    "DOC203",
+    "DOC402",
+    "DOC403",
+    "DOC501",
+    "DOC502",
+    "DOC503",
+]
+per-file-ignores = [
+    "src/nyt_cooking/client/models/*:DOC601,DOC603",
+    "src/nyt_cooking/client/settings.py:DOC601,DOC603",
+]
+allow-init-docstring = true
+ignore-private-args = true
+skip-checking-short-docstrings = false
 
 [tool.ty.environment]
 python = ".venv"

@@ -26,3 +26,6 @@ zensical-dev:
 
 zensical-check:
 	uv run zensical build --clean --strict
+
+generate-mcp-tools-reference:
+	uv run scripts/generate_mcp_tools_reference.py

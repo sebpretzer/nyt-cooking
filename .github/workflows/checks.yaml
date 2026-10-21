@@ -23,6 +23,7 @@ jobs:
           filters: |
             lint:
               - 'src/nyt_cooking/**'
+              - 'scripts/**'
               - 'tests/**'
               - '.pre-commit-config.yaml'
               - 'Makefile'

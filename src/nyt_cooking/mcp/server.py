@@ -220,6 +220,9 @@ def get_folders(client: Client = SessionClient) -> Folders:
 
     Alphabetical, with each folder's ID and number of recipes.
 
+    Args:
+        client (Client): The NYT Cooking client, supplied by FastMCP.
+
     Returns:
         Folders: The recipe box folders.
     """
@@ -381,6 +384,9 @@ def auth_login(cookie: str) -> IsAuthenticated:
 
     Returns:
         IsAuthenticated: That the user is now logged in.
+
+    Raises:
+        ToolError: If the cookie is empty, or NYT does not accept it.
     """
     cookie = cookie.strip()
     if not cookie:
@@ -402,6 +408,9 @@ def auth_logout() -> IsAuthenticated:
     Returns whether the user is still logged in afterwards, which is only true when
     a cookie is also configured outside the saved login, such as in the
     `NYT_COOKING_COOKIE` environment variable.
+
+    Returns:
+        IsAuthenticated: Whether the user is still logged in.
     """
     Settings.clear_credentials()
     return get_auth_status()
@@ -413,6 +422,9 @@ def get_auth_status() -> IsAuthenticated:
 
     Returns false when no cookie is saved, NYT no longer recognises it, or the
     account's NYT Cooking subscription has lapsed.
+
+    Returns:
+        IsAuthenticated: Whether the user is logged in.
     """
     try:
         Client().close()

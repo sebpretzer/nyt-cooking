@@ -19,7 +19,6 @@ nav = [
       { "Recipes" = "reference/models/recipes.md" },
       { "Search" = "reference/models/search.md" },
     ] },
-    { "MCP Server" = "reference/mcp_server.md" },
     { "MCP Tools" = "reference/mcp_tools.md" },
   ] },
 ]

@@ -1,6 +1,6 @@
 #! /usr/bin/env uv run python
 
-"""Script to generate the MCP tools reference page from the MCP server."""
+"""Script to generate the MCP reference page from the MCP server."""
 
 import argparse
 import asyncio
@@ -16,7 +16,7 @@ from mcp.types import Tool
 
 from nyt_cooking.mcp.server import mcp
 
-DEFAULT_OUTPUT = Path("docs/reference/mcp_tools.md")
+DEFAULT_OUTPUT = Path("docs/reference/mcp.md")
 
 
 def _schema_type(schema: dict[str, Any]) -> str:
@@ -158,7 +158,7 @@ def _returns(name: str) -> str:
 
 
 def render(tools: list[Tool]) -> str:
-    """Render the MCP tools reference page.
+    """Render the MCP reference page.
 
     Args:
         tools (list[Tool]): The tools as MCP clients see them.
@@ -204,7 +204,7 @@ async def _list_tools() -> list[Tool]:
 
 
 def main() -> None:
-    """Write the MCP tools reference page."""
+    """Write the MCP reference page."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()

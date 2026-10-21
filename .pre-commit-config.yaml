@@ -27,7 +27,7 @@ repos:
       - id: markdownlint-fix
         exclude: |
           (?x)^(
-            docs/reference/mcp_tools\.md |
+            docs/reference/mcp\.md |
             \.github/.*\.md
           )$
   - repo: https://github.com/crate-ci/typos
@@ -69,9 +69,9 @@ repos:
         types: [python]
         require_serial: true
         pass_filenames: false
-      - id: scripts/generate_mcp_tools_reference.py
-        name: scripts/generate_mcp_tools_reference.py
-        entry: uv run scripts/generate_mcp_tools_reference.py
+      - id: scripts/generate_mcp_reference.py
+        name: scripts/generate_mcp_reference.py
+        entry: uv run scripts/generate_mcp_reference.py
         language: system
-        files: ^(src/nyt_cooking/|scripts/generate_mcp_tools_reference\.py$)
+        files: ^(src/nyt_cooking/|scripts/generate_mcp_reference\.py$)
         pass_filenames: false

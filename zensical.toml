@@ -4,6 +4,7 @@ site_url = "https://nyt-cooking.pretzer.io/"
 repo_name = "sebpretzer/nyt-cooking"
 repo_url = "https://github.com/sebpretzer/nyt-cooking"
 edit_uri = "edit/main/docs/"
+extra_css = ["stylesheets/extra.css"]
 
 nav = [
   { "Home" = "index.md" },
@@ -32,6 +33,7 @@ features = [
 ]
 
 [project.theme.icon]
+logo = "lucide/chef-hat"
 repo = "material/github"
 
 [[project.theme.palette]]

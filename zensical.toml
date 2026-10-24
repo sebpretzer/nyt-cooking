@@ -9,6 +9,7 @@ extra_css = ["stylesheets/extra.css"]
 nav = [
   { "Home" = "index.md" },
   { "Reference" = [
+    { "MCP" = "reference/mcp.md" },
     { "Client" = "reference/client.md" },
     { "Settings" = "reference/settings.md" },
     { "Models" = [
@@ -19,7 +20,6 @@ nav = [
       { "Recipes" = "reference/models/recipes.md" },
       { "Search" = "reference/models/search.md" },
     ] },
-    { "MCP Server" = "reference/mcp_server.md" },
   ] },
 ]
 

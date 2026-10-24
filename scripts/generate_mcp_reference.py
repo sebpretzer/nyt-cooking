@@ -1,10 +1,25 @@
-#! /usr/bin/env uv run python
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.13, <3.15"
+# dependencies = [
+#     "griffe>=2.4.0",
+#     "nyt-cooking",
+#     "pygments>=2.21.0",
+# ]
+#
+# [tool.uv.sources]
+# nyt-cooking = { path = "..", editable = true }
+# ///
 
 """Script to generate the MCP reference page from the MCP server.
 
+This script was vibe coded with Claude Opus and is not held to the same standards as
+the rest of the codebase.
+
 The page mirrors the mkdocstrings pages: symbol badges on headings and in the table
 of contents, labels, a highlighted signature, `Parameters`, `Returns` and `Raises`
-tables, collapsible JSON schemas and the collapsible source code. The page carries
+tables, collapsible JSON schemas and the collapsible source code, inside the same
+`doc` blocks that mkdocstrings uses so the theme styles them the same. The page carries
 its own styles for the `tool` and `server` symbol badges, as mkdocstrings ships
 styles for its own symbol types.
 """
@@ -423,7 +438,11 @@ def render(docs: list[ToolDoc]) -> str:
         STYLE.strip(),
         "</style>",
         "",
+        '<div class="doc doc-object doc-server" markdown>',
+        "",
         _heading(2, "server", mcp.name, []),
+        "",
+        '<div class="doc doc-contents first" markdown>',
         "",
     ]
     if mcp.instructions:
@@ -443,7 +462,14 @@ def render(docs: list[ToolDoc]) -> str:
     )
     for doc in docs:
         tool = doc.tool
-        lines += [_heading(3, "tool", tool.name, _labels(tool)), ""]
+        lines += [
+            '<div class="doc doc-object doc-tool" markdown>',
+            "",
+            _heading(3, "tool", tool.name, _labels(tool)),
+            "",
+            '<div class="doc doc-contents" markdown>',
+            "",
+        ]
         lines += [_signature(doc), ""]
         lines += [(tool.description or "").strip(), ""]
         rows = _parameter_rows(tool.input_schema)
@@ -476,6 +502,8 @@ def render(docs: list[ToolDoc]) -> str:
         if tool.output_schema:
             lines += _schema_details("Show output schema:", tool.output_schema)
         lines += _source_details(doc)
+        lines += ["</div>", "", "</div>", ""]
+    lines += ["</div>", "", "</div>", ""]
     return "\n".join(lines).rstrip("\n") + "\n"
 
 

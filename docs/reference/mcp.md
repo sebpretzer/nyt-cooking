@@ -39,7 +39,11 @@ code.doc-symbol-server {
 }
 </style>
 
+<div class="doc doc-object doc-server" markdown>
+
 ## <code class="doc-symbol doc-symbol-heading doc-symbol-server"></code> nyt-cooking { #nyt-cooking data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-server"></code>&nbsp;nyt-cooking' }
+
+<div class="doc doc-contents first" markdown>
 
 Every NYT Cooking tool needs the user to be logged in with an NYT Cooking subscription. If a tool fails because they are not, ask the user for the `NYT-S` cookie from a browser signed in to cooking.nytimes.com with an NYT Cooking subscription, and call `auth_login`.
 
@@ -65,7 +69,11 @@ Every NYT Cooking tool needs the user to be logged in with an NYT Cooking subscr
 | [`auth_logout`](#auth_logout) | Remove the saved NYT Cooking cookie. |
 | [`get_auth_status`](#get_auth_status) | Check with NYT whether the user is logged in with an NYT Cooking subscription. |
 
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_search_filters <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_search_filters data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_search_filters' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_search_filters</span><span class="p">(</span>
     <span class="n">query</span><span class="p">:</span> <span class="n">string</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
@@ -268,7 +276,15 @@ def get_search_filters(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> search_recipes <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #search_recipes data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;search_recipes' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">search_recipes</span><span class="p">(</span>
     <span class="n">query</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
@@ -608,7 +624,15 @@ def search_recipes(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_recipe <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_recipe data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_recipe' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_recipe</span><span class="p">(</span><span class="n">recipe_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.recipes.Recipe" optional>Recipe</autoref></span>
 </code></pre></div>
@@ -1036,7 +1060,15 @@ def get_recipe(recipe_id: int, client: Client = SessionClient) -> Recipe:
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_recipe_comments <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_recipe_comments data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_recipe_comments' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_recipe_comments</span><span class="p">(</span>
     <span class="n">recipe_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">,</span>
@@ -1271,7 +1303,15 @@ def get_recipe_comments(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_recipe_box <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_recipe_box data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_recipe_box' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_recipe_box</span><span class="p">(</span>
     <span class="n">max_results</span><span class="p">:</span> <span class="n">integer</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span>
@@ -1564,7 +1604,15 @@ def get_recipe_box(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_recently_viewed <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_recently_viewed data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_recently_viewed' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_recently_viewed</span><span class="p">(</span><span class="n">max_results</span><span class="p">:</span> <span class="n">integer</span> <span class="o">=</span> <span class="mi">20</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.recipes.RecentlyViewed" optional>RecentlyViewed</autoref></span>
 </code></pre></div>
@@ -1809,7 +1857,15 @@ def get_recently_viewed(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_folders <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_folders data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_folders' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_folders</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.folders.Folders" optional>Folders</autoref></span>
 </code></pre></div>
@@ -1917,7 +1973,15 @@ def get_folders(client: Client = SessionClient) -> Folders:
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_folder_recipes <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_folder_recipes data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_folder_recipes' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_folder_recipes</span><span class="p">(</span><span class="n">folder_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.recipes.RecipeBox" optional>RecipeBox</autoref></span>
 </code></pre></div>
@@ -2183,7 +2247,15 @@ def get_folder_recipes(folder_id: int, client: Client = SessionClient) -> Recipe
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> add_folder <span class="doc doc-labels"><small class="doc doc-label doc-label-non-destructive"><code>non-destructive</code></small></span> { #add_folder data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;add_folder' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">add_folder</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.folders.Folder" optional>Folder</autoref></span>
 </code></pre></div>
@@ -2293,7 +2365,15 @@ def add_folder(name: str, client: Client = SessionClient) -> Folder:
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> rename_folder <span class="doc doc-labels"><small class="doc doc-label doc-label-destructive"><code>destructive</code></small></span> { #rename_folder data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;rename_folder' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">rename_folder</span><span class="p">(</span><span class="n">folder_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.folders.Folder" optional>Folder</autoref></span>
 </code></pre></div>
@@ -2410,7 +2490,15 @@ def rename_folder(folder_id: int, name: str, client: Client = SessionClient) -> 
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> remove_folder <span class="doc doc-labels"><small class="doc doc-label doc-label-destructive"><code>destructive</code></small></span> { #remove_folder data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;remove_folder' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">remove_folder</span><span class="p">(</span><span class="n">folder_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.folders.Folders" optional>Folders</autoref></span>
 </code></pre></div>
@@ -2533,7 +2621,15 @@ def remove_folder(folder_id: int, client: Client = SessionClient) -> Folders:
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_recipe_save_status <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_recipe_save_status data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_recipe_save_status' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_recipe_save_status</span><span class="p">(</span><span class="n">recipe_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.folders.SavedRecipe" optional>SavedRecipe</autoref></span>
 </code></pre></div>
@@ -2677,7 +2773,15 @@ def get_recipe_save_status(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> add_recipe <span class="doc doc-labels"><small class="doc doc-label doc-label-non-destructive"><code>non-destructive</code></small></span> { #add_recipe data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;add_recipe' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">add_recipe</span><span class="p">(</span>
     <span class="n">recipe_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">,</span>
@@ -2846,7 +2950,15 @@ def add_recipe(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> remove_recipe <span class="doc doc-labels"><small class="doc doc-label doc-label-destructive"><code>destructive</code></small></span> { #remove_recipe data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;remove_recipe' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">remove_recipe</span><span class="p">(</span>
     <span class="n">recipe_id</span><span class="p">:</span> <span class="n">integer</span><span class="p">,</span>
@@ -3016,7 +3128,15 @@ def remove_recipe(
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> auth_login <span class="doc doc-labels"><small class="doc doc-label doc-label-destructive"><code>destructive</code></small></span> { #auth_login data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;auth_login' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">auth_login</span><span class="p">(</span><span class="n">cookie</span><span class="p">:</span> <span class="n">string</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.auth.IsAuthenticated" optional>IsAuthenticated</autoref></span>
 </code></pre></div>
@@ -3123,7 +3243,15 @@ def auth_login(cookie: str) -> IsAuthenticated:
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> auth_logout <span class="doc doc-labels"><small class="doc doc-label doc-label-destructive"><code>destructive</code></small></span> { #auth_logout data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;auth_logout' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">auth_logout</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.auth.IsAuthenticated" optional>IsAuthenticated</autoref></span>
 </code></pre></div>
@@ -3195,7 +3323,15 @@ def auth_logout() -> IsAuthenticated:
 
 </details>
 
+</div>
+
+</div>
+
+<div class="doc doc-object doc-tool" markdown>
+
 ### <code class="doc-symbol doc-symbol-heading doc-symbol-tool"></code> get_auth_status <span class="doc doc-labels"><small class="doc doc-label doc-label-read-only"><code>read-only</code></small></span> { #get_auth_status data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-tool"></code>&nbsp;get_auth_status' }
+
+<div class="doc doc-contents" markdown>
 
 <div class="doc-signature highlight"><pre><span></span><code><span class="n">get_auth_status</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n"><autoref identifier="nyt_cooking.client.models.auth.IsAuthenticated" optional>IsAuthenticated</autoref></span>
 </code></pre></div>
@@ -3267,3 +3403,11 @@ def get_auth_status() -> IsAuthenticated:
 ```
 
 </details>
+
+</div>
+
+</div>
+
+</div>
+
+</div>

@@ -70,7 +70,7 @@ repos:
         pass_filenames: false
       - id: generate-mcp-reference
         name: generate-mcp-reference
-        entry: uv run scripts/generate_mcp_reference.py
+        entry: ./scripts/generate_mcp_reference.py
         language: system
         files: ^(src/nyt_cooking/|scripts/generate_mcp_reference\.py$)
         pass_filenames: false

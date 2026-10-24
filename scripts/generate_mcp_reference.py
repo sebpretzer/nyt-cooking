@@ -1,22 +1,64 @@
 #! /usr/bin/env uv run python
 
-"""Script to generate the MCP reference page from the MCP server."""
+"""Script to generate the MCP reference page from the MCP server.
+
+The page mirrors the mkdocstrings pages: symbol badges on headings and in the table
+of contents, labels, a highlighted signature, `Parameters`, `Returns` and `Raises`
+tables, collapsible JSON schemas and the collapsible source code.
+"""
 
 import argparse
 import asyncio
 import html
+import inspect
 import json
 import typing
+from collections.abc import Callable
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from fastmcp import Client
 from fastmcp.tools import FunctionTool
+from griffe import (
+    Docstring,
+    DocstringSectionRaises,
+    DocstringSectionReturns,
+)
 from mcp.types import Tool
+from pygments import highlight
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers.python import PythonLexer
 
 from nyt_cooking.mcp.server import mcp
 
 DEFAULT_OUTPUT = Path("docs/reference/mcp.md")
+ROOT = Path(__file__).resolve().parents[1]
+SIGNATURE_WIDTH = 70
+
+
+@dataclass
+class ToolDoc:
+    """Everything the page shows about one tool.
+
+    Attributes:
+        tool (Tool): The tool as MCP clients see it.
+        returns (str): The identifier of the Python return type, for linking.
+        returns_description (str): The description under `Returns:` in the docstring.
+        raises (list[tuple[str, str]]): Each exception and description under
+            `Raises:` in the docstring.
+        source_path (str): The path of the function's file, from the repository root.
+        source_start (int): The line number where the function's source starts.
+        source (str): The function's source code.
+    """
+
+    tool: Tool
+    returns: str
+    returns_description: str
+    raises: list[tuple[str, str]]
+    source_path: str
+    source_start: int
+    source: str
 
 
 def _schema_type(schema: dict[str, Any]) -> str:
@@ -55,6 +97,20 @@ def _object_schema(schema: dict[str, Any]) -> dict[str, Any] | None:
     return None
 
 
+def _field_type(schema: dict[str, Any]) -> str:
+    """Describe a parameter's type, naming nested objects `object`.
+
+    Args:
+        schema (dict[str, Any]): The JSON schema of one parameter or field.
+
+    Returns:
+        str: The type, such as `string` or `object | null`.
+    """
+    if _object_schema(schema) is None:
+        return _schema_type(schema)
+    return "object | null" if "null" in _schema_type(schema) else "object"
+
+
 def _cell(text: str) -> str:
     """Make text safe for a single Markdown table cell.
 
@@ -83,6 +139,120 @@ def _code_cell(text: str) -> str:
     return f"<code>{escaped}</code>"
 
 
+def _row(cells: list[str]) -> str:
+    """Join cells into a Markdown table row, leaving empty cells blank.
+
+    Args:
+        cells (list[str]): The cell contents, in column order.
+
+    Returns:
+        str: The table row.
+    """
+    return "|" + "|".join(f" {cell} " if cell else " " for cell in cells) + "|"
+
+
+def _symbol(kind: str, *, toc: bool = False) -> str:
+    """Render a symbol badge, as mkdocstrings puts before headings.
+
+    Args:
+        kind (str): The symbol type, `server` or `tool`.
+        toc (bool): Whether the badge is for the table of contents.
+
+    Returns:
+        str: An empty `code` element that the stylesheet fills in.
+    """
+    place = "toc" if toc else "heading"
+    return f'<code class="doc-symbol doc-symbol-{place} doc-symbol-{kind}"></code>'
+
+
+def _heading(level: int, kind: str, name: str, labels: list[str]) -> str:
+    """Render a heading with a symbol badge, labels and a matching TOC entry.
+
+    Args:
+        level (int): The heading level.
+        kind (str): The symbol type, `server` or `tool`.
+        name (str): The heading text, also used as its anchor.
+        labels (list[str]): Labels shown after the name.
+
+    Returns:
+        str: The Markdown heading.
+    """
+    label_html = ""
+    if labels:
+        pills = "".join(
+            f'<small class="doc doc-label doc-label-{label}">'
+            f"<code>{label}</code></small>"
+            for label in labels
+        )
+        label_html = f' <span class="doc doc-labels">{pills}</span>'
+    toc_label = f"{_symbol(kind, toc=True)}&nbsp;{name}"
+    return (
+        f"{'#' * level} {_symbol(kind)} {name}{label_html} "
+        f"{{ #{name} data-toc-label='{toc_label}' }}"
+    )
+
+
+def _labels(tool: Tool) -> list[str]:
+    """List a tool's labels from its annotations.
+
+    Args:
+        tool (Tool): The tool as MCP clients see it.
+
+    Returns:
+        list[str]: `read-only`, `destructive` or `non-destructive`, then
+            `idempotent` and `open-world` when set.
+    """
+    annotations = tool.annotations
+    if annotations is None:
+        return []
+    labels = []
+    if annotations.read_only_hint:
+        labels.append("read-only")
+    elif annotations.destructive_hint:
+        labels.append("destructive")
+    elif annotations.destructive_hint is False:
+        labels.append("non-destructive")
+    if annotations.idempotent_hint:
+        labels.append("idempotent")
+    if annotations.open_world_hint:
+        labels.append("open-world")
+    return labels
+
+
+def _signature(doc: ToolDoc) -> str:
+    """Render a highlighted signature, wrapped like mkdocstrings wraps long ones.
+
+    Args:
+        doc (ToolDoc): The tool to render.
+
+    Returns:
+        str: The signature block as HTML, with the return type linked.
+    """
+    schema = doc.tool.input_schema
+    required = set(schema.get("required", []))
+    params = []
+    for name, field in schema.get("properties", {}).items():
+        param = f"{name}: {_field_type(field)}"
+        if name not in required and "default" in field:
+            param += f" = {json.dumps(field['default'])}"
+        params.append(param)
+    return_name = doc.returns.rsplit(".", 1)[-1]
+    one_line = f"{doc.tool.name}({', '.join(params)}) -> {return_name}"
+    if len(one_line) <= SIGNATURE_WIDTH:
+        text = one_line
+    else:
+        body = "".join(f"    {param},\n" for param in params)
+        text = f"{doc.tool.name}(\n{body}) -> {return_name}"
+    code = highlight(text, PythonLexer(), HtmlFormatter(nowrap=True)).rstrip("\n")
+    linked = f'<autoref identifier="{doc.returns}" optional>{return_name}</autoref>'
+    head, _, tail = code.rpartition(return_name)
+    code = f"{head}{linked}{tail}"
+    return (
+        '<div class="doc-signature highlight"><pre><span></span>'
+        f"<code>{code}\n</code></pre></div>"
+    )
+
+
 def _parameter_rows(schema: dict[str, Any], prefix: str = "") -> list[str]:
     """Build one table row per parameter, and per field of object parameters.
 
@@ -97,110 +267,225 @@ def _parameter_rows(schema: dict[str, Any], prefix: str = "") -> list[str]:
     required = set(schema.get("required", []))
     for name, field in schema.get("properties", {}).items():
         path = f"{prefix}{name}"
-        nested = _object_schema(field)
-        field_type = "object" if nested else _schema_type(field)
-        if nested and "null" in _schema_type(field):
-            field_type = "object | null"
-        default = _code_cell(json.dumps(field["default"])) if "default" in field else ""
-        cells = [
-            f"`{path}`",
-            _code_cell(field_type),
-            "yes" if name in required else "no",
-            default,
-            _cell(field.get("description", "")),
-        ]
+        if name in required:
+            default = "*required*"
+        elif "default" in field:
+            default = _code_cell(json.dumps(field["default"]))
+        else:
+            default = ""
         rows.append(
-            "|" + "|".join(f" {cell} " if cell else " " for cell in cells) + "|"
+            _row(
+                [
+                    f"`{path}`",
+                    _code_cell(_field_type(field)),
+                    _cell(field.get("description", "")),
+                    default,
+                ]
+            ),
         )
+        nested = _object_schema(field)
         if nested:
             rows.extend(_parameter_rows(nested, prefix=f"{path}."))
     return rows
 
 
-def _behavior(tool: Tool) -> str:
-    """Summarize a tool's annotations as whether and how it changes data.
+def _section(title: str, header: list[str], rows: list[str]) -> list[str]:
+    """Render a docstring-style section: a bold title and a table.
 
     Args:
-        tool (Tool): The tool as MCP clients see it.
+        title (str): The section title, such as `Parameters`.
+        header (list[str]): The table's column names.
+        rows (list[str]): The table rows.
 
     Returns:
-        str: `Read-only`, `Destructive` or `Non-destructive`.
+        list[str]: The section's Markdown lines.
     """
-    annotations = tool.annotations
-    if annotations is None:
-        return "Unspecified"
-    if annotations.read_only_hint:
-        return "Read-only"
-    if annotations.destructive_hint:
-        return "Destructive"
-    return "Non-destructive"
+    return [
+        f'<span class="doc-section-title">{title}:</span>',
+        "",
+        _row(header),
+        _row(["---"] * len(header)),
+        *rows,
+        "",
+    ]
 
 
-def _returns(name: str) -> str:
-    """Link a tool's return type to its page in the API reference.
+def _schema_details(summary: str, schema: dict[str, Any]) -> list[str]:
+    """Render a collapsible JSON schema, as mkdocstrings shows Pydantic schemas.
 
     Args:
-        name (str): The tool name, which is also its function's name.
+        summary (str): The text of the collapsed toggle.
+        schema (dict[str, Any]): The JSON schema.
 
     Returns:
-        str: A Markdown cross-reference to the return type.
-
-    Raises:
-        TypeError: If the tool is not defined by a Python function.
+        list[str]: The block's Markdown lines.
     """
-    tool = asyncio.run(mcp.get_tool(name))
-    if not isinstance(tool, FunctionTool):
-        msg = f"Tool {name!r} is not a function tool."
-        raise TypeError(msg)
-    return_type = typing.get_type_hints(tool.fn)["return"]
-    identifier = f"{return_type.__module__}.{return_type.__qualname__}"
-    return f"[`{return_type.__qualname__}`][{identifier}]"
+    return [
+        "<details markdown>",
+        f"<summary>{summary}</summary>",
+        "",
+        "```json",
+        json.dumps(schema, indent=2),
+        "```",
+        "",
+        "</details>",
+        "",
+    ]
 
 
-def render(tools: list[Tool]) -> str:
+def _source_details(doc: ToolDoc) -> list[str]:
+    """Render the collapsible source code, as mkdocstrings shows it.
+
+    Args:
+        doc (ToolDoc): The tool.
+
+    Returns:
+        list[str]: The block's Markdown lines.
+    """
+    return [
+        '<details class="mkdocstrings-source" markdown>',
+        f"<summary>Source code in <code>{doc.source_path}</code></summary>",
+        "",
+        f'```python linenums="{doc.source_start}"',
+        doc.source.rstrip("\n"),
+        "```",
+        "",
+        "</details>",
+        "",
+    ]
+
+
+def _summary(description: str) -> str:
+    """Take a description's first paragraph as a one-line summary.
+
+    Args:
+        description (str): The full description.
+
+    Returns:
+        str: The first paragraph, on one line.
+    """
+    return _cell(description.strip().split("\n\n", 1)[0])
+
+
+def render(docs: list[ToolDoc]) -> str:
     """Render the MCP reference page.
 
     Args:
-        tools (list[Tool]): The tools as MCP clients see them.
+        docs (list[ToolDoc]): The tools, in the server's order.
 
     Returns:
         str: The page as Markdown.
     """
-    lines = ["# MCP Tools", ""]
-    lines += [
-        "| Tool | Name | Behavior |",
-        "| --- | --- | --- |",
-    ]
-    lines += [
-        f"| [{tool.title}](#{tool.name}) | `{tool.name}` | {_behavior(tool)} |"
-        for tool in tools
-    ]
-    for tool in tools:
-        lines += ["", f"## {tool.title} {{ #{tool.name} }}", ""]
-        lines += [f"`{tool.name}` · {_behavior(tool)}", ""]
+    lines = ["# MCP Tools", "", _heading(2, "server", mcp.name, []), ""]
+    if mcp.instructions:
+        lines += [" ".join(mcp.instructions.split()), ""]
+    lines += _section(
+        "Tools",
+        ["Name", "Description"],
+        [
+            _row(
+                [
+                    f"[`{doc.tool.name}`](#{doc.tool.name})",
+                    _summary(doc.tool.description or ""),
+                ]
+            )
+            for doc in docs
+        ],
+    )
+    for doc in docs:
+        tool = doc.tool
+        lines += [_heading(3, "tool", tool.name, _labels(tool)), ""]
+        lines += [_signature(doc), ""]
         lines += [(tool.description or "").strip(), ""]
         rows = _parameter_rows(tool.input_schema)
         if rows:
-            lines += [
-                "**Parameters**",
-                "",
-                "| Name | Type | Required | Default | Description |",
-                "| --- | --- | --- | --- | --- |",
-                *rows,
-                "",
-            ]
-        lines += ["**Returns**", "", _returns(tool.name)]
-    return "\n".join(lines) + "\n"
+            lines += _section(
+                "Parameters",
+                ["Name", "Type", "Description", "Default"],
+                rows,
+            )
+        return_name = doc.returns.rsplit(".", 1)[-1]
+        lines += _section(
+            "Returns",
+            ["Type", "Description"],
+            [
+                _row(
+                    [
+                        f"[`{return_name}`][{doc.returns}]",
+                        _cell(doc.returns_description),
+                    ]
+                )
+            ],
+        )
+        if doc.raises:
+            lines += _section(
+                "Raises",
+                ["Type", "Description"],
+                [_row([f"`{name}`", _cell(text)]) for name, text in doc.raises],
+            )
+        lines += _schema_details("Show input schema:", tool.input_schema)
+        if tool.output_schema:
+            lines += _schema_details("Show output schema:", tool.output_schema)
+        lines += _source_details(doc)
+    return "\n".join(lines).rstrip("\n") + "\n"
 
 
-async def _list_tools() -> list[Tool]:
-    """List the server's tools through an in-memory MCP client.
+def _source(function: Callable[..., Any]) -> tuple[str, int, str]:
+    """Find a function's source code.
+
+    Args:
+        function (Callable[..., Any]): The function.
 
     Returns:
-        list[Tool]: The tools exactly as MCP clients see them.
+        tuple[str, int, str]: The path of its file from the repository root, the
+            line number where it starts, and its source code.
+    """
+    lines, start = inspect.getsourcelines(function)
+    path = Path(inspect.getsourcefile(function) or "").resolve().relative_to(ROOT)
+    return path.as_posix(), start, "".join(lines)
+
+
+async def _tool_docs() -> list[ToolDoc]:
+    """Collect each tool as MCP clients see it, with its function's docstring.
+
+    Returns:
+        list[ToolDoc]: The tools, in the server's order.
+
+    Raises:
+        TypeError: If a tool is not defined by a Python function.
     """
     async with Client(mcp) as client:
-        return await client.list_tools()
+        tools = await client.list_tools()
+    docs = []
+    for tool in tools:
+        function_tool = await mcp.get_tool(tool.name)
+        if not isinstance(function_tool, FunctionTool):
+            msg = f"Tool {tool.name!r} is not a function tool."
+            raise TypeError(msg)
+        return_type = typing.get_type_hints(function_tool.fn)["return"]
+        sections = Docstring(function_tool.fn.__doc__ or "").parse("google")
+        returns_description = ""
+        raises: list[tuple[str, str]] = []
+        for section in sections:
+            if isinstance(section, DocstringSectionReturns):
+                returns_description = section.value[0].description
+            elif isinstance(section, DocstringSectionRaises):
+                raises += [
+                    (str(item.annotation), item.description) for item in section.value
+                ]
+        source_path, source_start, source = _source(function_tool.fn)
+        docs.append(
+            ToolDoc(
+                tool=tool,
+                returns=f"{return_type.__module__}.{return_type.__qualname__}",
+                returns_description=returns_description,
+                raises=raises,
+                source_path=source_path,
+                source_start=source_start,
+                source=source,
+            ),
+        )
+    return docs
 
 
 def main() -> None:
@@ -208,7 +493,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
-    args.output.write_text(render(asyncio.run(_list_tools())))
+    args.output.write_text(render(asyncio.run(_tool_docs())))
 
 
 if __name__ == "__main__":

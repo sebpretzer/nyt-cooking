@@ -13,8 +13,9 @@
 
 """Script to generate the MCP reference page from the MCP server.
 
-This script was vibe coded with Claude Opus and is not held to the same standards as
-the rest of the codebase.
+WARNING: This script was vibe coded with Claude Opus and is not held to the same
+standards as the rest of the codebase. Please do not rely on the coding patterns here,
+only on what it produces.
 
 The page mirrors the mkdocstrings pages: symbol badges on headings and in the table
 of contents, labels, a highlighted signature, `Parameters`, `Returns` and `Raises`

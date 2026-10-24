@@ -2,43 +2,6 @@
   color: #f97316;
 }
 
-:root,
-[data-md-color-scheme="default"] {
-  --doc-symbol-tool-fg-color: #1b7c83;
-  --doc-symbol-server-fg-color: var(--doc-symbol-module-fg-color);
-}
-
-[data-md-color-scheme="slate"] {
-  --doc-symbol-tool-fg-color: #56d4dd;
-  --doc-symbol-server-fg-color: var(--doc-symbol-module-fg-color);
-}
-
-a code.doc-symbol-tool,
-code.doc-symbol-tool {
-  color: var(--doc-symbol-tool-fg-color);
-}
-
-.md-content code.doc-symbol-tool::after {
-  content: "tool";
-}
-
-.md-sidebar code.doc-symbol-tool::after {
-  content: "t";
-}
-
-a code.doc-symbol-server,
-code.doc-symbol-server {
-  color: var(--doc-symbol-server-fg-color);
-}
-
-.md-content code.doc-symbol-server::after {
-  content: "server";
-}
-
-.md-sidebar code.doc-symbol-server::after {
-  content: "srv";
-}
-
 .md-typeset__table {
   width: 100%;
 }

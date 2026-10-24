@@ -1,5 +1,44 @@
 # MCP Tools
 
+<style>
+:root,
+[data-md-color-scheme="default"] {
+  --doc-symbol-tool-fg-color: #1b7c83;
+  --doc-symbol-server-fg-color: var(--doc-symbol-module-fg-color);
+}
+
+[data-md-color-scheme="slate"] {
+  --doc-symbol-tool-fg-color: #56d4dd;
+  --doc-symbol-server-fg-color: var(--doc-symbol-module-fg-color);
+}
+
+a code.doc-symbol-tool,
+code.doc-symbol-tool {
+  color: var(--doc-symbol-tool-fg-color);
+}
+
+.md-content code.doc-symbol-tool::after {
+  content: "tool";
+}
+
+.md-sidebar code.doc-symbol-tool::after {
+  content: "t";
+}
+
+a code.doc-symbol-server,
+code.doc-symbol-server {
+  color: var(--doc-symbol-server-fg-color);
+}
+
+.md-content code.doc-symbol-server::after {
+  content: "server";
+}
+
+.md-sidebar code.doc-symbol-server::after {
+  content: "srv";
+}
+</style>
+
 ## <code class="doc-symbol doc-symbol-heading doc-symbol-server"></code> nyt-cooking { #nyt-cooking data-toc-label='<code class="doc-symbol doc-symbol-toc doc-symbol-server"></code>&nbsp;nyt-cooking' }
 
 Every NYT Cooking tool needs the user to be logged in with an NYT Cooking subscription. If a tool fails because they are not, ask the user for the `NYT-S` cookie from a browser signed in to cooking.nytimes.com with an NYT Cooking subscription, and call `auth_login`.

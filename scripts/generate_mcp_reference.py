@@ -4,7 +4,9 @@
 
 The page mirrors the mkdocstrings pages: symbol badges on headings and in the table
 of contents, labels, a highlighted signature, `Parameters`, `Returns` and `Raises`
-tables, collapsible JSON schemas and the collapsible source code.
+tables, collapsible JSON schemas and the collapsible source code. The page carries
+its own styles for the `tool` and `server` symbol badges, as mkdocstrings ships
+styles for its own symbol types.
 """
 
 import argparse
@@ -35,6 +37,44 @@ from nyt_cooking.mcp.server import mcp
 DEFAULT_OUTPUT = Path("docs/reference/mcp.md")
 ROOT = Path(__file__).resolve().parents[1]
 SIGNATURE_WIDTH = 70
+STYLE = """
+:root,
+[data-md-color-scheme="default"] {
+  --doc-symbol-tool-fg-color: #1b7c83;
+  --doc-symbol-server-fg-color: var(--doc-symbol-module-fg-color);
+}
+
+[data-md-color-scheme="slate"] {
+  --doc-symbol-tool-fg-color: #56d4dd;
+  --doc-symbol-server-fg-color: var(--doc-symbol-module-fg-color);
+}
+
+a code.doc-symbol-tool,
+code.doc-symbol-tool {
+  color: var(--doc-symbol-tool-fg-color);
+}
+
+.md-content code.doc-symbol-tool::after {
+  content: "tool";
+}
+
+.md-sidebar code.doc-symbol-tool::after {
+  content: "t";
+}
+
+a code.doc-symbol-server,
+code.doc-symbol-server {
+  color: var(--doc-symbol-server-fg-color);
+}
+
+.md-content code.doc-symbol-server::after {
+  content: "server";
+}
+
+.md-sidebar code.doc-symbol-server::after {
+  content: "srv";
+}
+"""
 
 
 @dataclass
@@ -376,7 +416,16 @@ def render(docs: list[ToolDoc]) -> str:
     Returns:
         str: The page as Markdown.
     """
-    lines = ["# MCP Tools", "", _heading(2, "server", mcp.name, []), ""]
+    lines = [
+        "# MCP Tools",
+        "",
+        "<style>",
+        STYLE.strip(),
+        "</style>",
+        "",
+        _heading(2, "server", mcp.name, []),
+        "",
+    ]
     if mcp.instructions:
         lines += [" ".join(mcp.instructions.split()), ""]
     lines += _section(

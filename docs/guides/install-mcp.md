@@ -4,9 +4,9 @@ Install the NYT Cooking MCP server and connect it to an AI assistant.
 
 ## Prerequisites
 
-- A paid [NYT Cooking](https://cooking.nytimes.com/) subscription.
-- [uv](https://docs.astral.sh/uv/getting-started/installation/).
-- An AI assistant that supports MCP servers.
+- A paid [NYT Cooking](https://cooking.nytimes.com/) subscription
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
+- An AI assistant that supports MCP servers
 
 ## Connect your assistant
 

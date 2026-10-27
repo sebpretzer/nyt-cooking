@@ -10,6 +10,7 @@ nav = [
   { "Home" = "index.md" },
   { "Guides" = [
     { "Install the MCP server" = "guides/install-mcp.md" },
+    { "Install the Python client" = "guides/install-client.md" },
   ] },
   { "Reference" = [
     { "MCP" = "reference/mcp.md" },

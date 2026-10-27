@@ -2,9 +2,9 @@
 
 Log the MCP server in to your NYT Cooking account.
 
-## Prerequisites
+??? info "Prerequisites"
 
-[Install the MCP server](install.md) first.
+    [Install the MCP server](install.md) first.
 
 ## Find your cookie
 

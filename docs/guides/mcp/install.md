@@ -13,13 +13,13 @@ Install the NYT Cooking MCP server and connect it to an AI assistant.
 Every assistant below starts the server with the same command:
 
 ```bash
-uvx --from git+https://github.com/sebpretzer/nyt-cooking nyt-cooking-mcp
+uvx --from "nyt-cooking[mcp] @ git+https://github.com/sebpretzer/nyt-cooking" nyt-cooking-mcp
 ```
 
 === "Claude Code"
 
     ```bash
-    claude mcp add nyt-cooking -- uvx --from git+https://github.com/sebpretzer/nyt-cooking nyt-cooking-mcp
+    claude mcp add nyt-cooking -- uvx --from "nyt-cooking[mcp] @ git+https://github.com/sebpretzer/nyt-cooking" nyt-cooking-mcp
     ```
 
 === "Claude Desktop"
@@ -31,7 +31,7 @@ uvx --from git+https://github.com/sebpretzer/nyt-cooking nyt-cooking-mcp
           "command": "uvx",
           "args": [
             "--from",
-            "git+https://github.com/sebpretzer/nyt-cooking",
+            "nyt-cooking[mcp] @ git+https://github.com/sebpretzer/nyt-cooking",
             "nyt-cooking-mcp"
           ]
         }
@@ -42,17 +42,17 @@ uvx --from git+https://github.com/sebpretzer/nyt-cooking nyt-cooking-mcp
 === "VS Code"
 
     ```bash
-    code --add-mcp '{"name":"nyt-cooking","type":"stdio","command":"uvx","args":["--from","git+https://github.com/sebpretzer/nyt-cooking","nyt-cooking-mcp"]}'
+    code --add-mcp '{"name":"nyt-cooking","type":"stdio","command":"uvx","args":["--from","nyt-cooking[mcp] @ git+https://github.com/sebpretzer/nyt-cooking","nyt-cooking-mcp"]}'
     ```
 
 === "Codex CLI"
 
     ```bash
-    codex mcp add nyt-cooking -- uvx --from git+https://github.com/sebpretzer/nyt-cooking nyt-cooking-mcp
+    codex mcp add nyt-cooking -- uvx --from "nyt-cooking[mcp] @ git+https://github.com/sebpretzer/nyt-cooking" nyt-cooking-mcp
     ```
 
 === "Gemini CLI"
 
     ```bash
-    gemini mcp add -s user nyt-cooking uvx -- --from git+https://github.com/sebpretzer/nyt-cooking nyt-cooking-mcp
+    gemini mcp add -s user nyt-cooking uvx -- --from "nyt-cooking[mcp] @ git+https://github.com/sebpretzer/nyt-cooking" nyt-cooking-mcp
     ```

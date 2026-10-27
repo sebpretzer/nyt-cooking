@@ -70,9 +70,80 @@ jobs:
     needs: [changes, lint]
     if: ${{ needs.changes.outputs.test == 'true' }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14", "3.15"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: install uv
+        run: make install-uv
+      - name: install python
+        run: uv python install ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: make install
+
+      - name: Run tests
+        run: make test
+        env:
+          COVERAGE_FILE: coverage/.coverage.test-${{ matrix.python-version }}
+      - name: Store coverage files
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: coverage-test-${{ matrix.python-version }}
+          path: coverage
+          include-hidden-files: true
+
+  # https://github.com/pydantic/pydantic/blob/980d2763eb24d972221c847bda61f1049fdbeeb1/.github/workflows/ci.yml#L249
+  coverage-combine:
+    runs-on: ubuntu-latest
+    needs: [test]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Install uv, python, and dependencies
         run: make install-all
-      - name: Run tests
-        run: make test
+
+      - name: Download coverage files
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          merge-multiple: true
+          pattern: coverage-*
+          path: coverage
+      - run: uvx coverage combine coverage/
+      - run: uvx coverage report
+      - run: uvx coverage html --show-contexts --title "Coverage report for ${{ github.sha }}"
+
+      - name: Store coverage data
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: coverage-data
+          path: .coverage
+          include-hidden-files: true
+      - name: Store coverage HTML
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: coverage-html
+          path: htmlcov
+
+  # https://github.com/pydantic/pydantic/blob/980d2763eb24d972221c847bda61f1049fdbeeb1/.github/workflows/ci.yml#L287
+  coverage-pr-comment:
+    runs-on: ubuntu-latest
+    needs: coverage-combine
+    permissions:
+      contents: write
+      pull-requests: write
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Install uv, python, and dependencies
+        run: make install-all
+
+      - name: Download coverage data
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          name: coverage-data
+
+      - name: Generate coverage comment
+        id: coverage-comment
+        uses: py-cov-action/python-coverage-comment-action@e5fb2218463c3377f3504b0c5b5646ed53da7a2f # v4.5
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

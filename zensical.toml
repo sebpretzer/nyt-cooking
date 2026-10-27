@@ -21,6 +21,9 @@ nav = [
       { "Search recipes" = "guides/python/search-recipes.md" },
       { "Manage your recipe box" = "guides/python/recipe-box.md" },
     ] },
+    { "Development" = [
+      { "Contributing" = "CONTRIBUTING.md" },
+    ] },
   ] },
   { "Reference" = [
     { "MCP" = "reference/mcp.md" },
@@ -33,6 +36,9 @@ nav = [
       { "Folders" = "reference/models/folders.md" },
       { "Recipes" = "reference/models/recipes.md" },
       { "Search" = "reference/models/search.md" },
+    ] },
+    { "Development" = [
+      { "Code of Conduct" = "CODE_OF_CONDUCT.md" },
     ] },
   ] },
 ]

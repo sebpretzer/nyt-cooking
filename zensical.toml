@@ -13,11 +13,13 @@ nav = [
       { "Install" = "guides/mcp/install.md" },
       { "Set up credentials" = "guides/mcp/credentials.md" },
       { "Search recipes" = "guides/mcp/search-recipes.md" },
+      { "Manage your recipe box" = "guides/mcp/recipe-box.md" },
     ] },
     { "Python" = [
       { "Install" = "guides/python/install.md" },
       { "Set up credentials" = "guides/python/credentials.md" },
       { "Search recipes" = "guides/python/search-recipes.md" },
+      { "Manage your recipe box" = "guides/python/recipe-box.md" },
     ] },
   ] },
   { "Reference" = [

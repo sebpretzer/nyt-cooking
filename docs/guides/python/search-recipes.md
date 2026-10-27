@@ -8,7 +8,7 @@ Find NYT Cooking recipes with the Python client.
 
 ## Search
 
-Call [`search_recipes_paginated`](../../reference/client.md#nyt_cooking.client.client.Client.search_recipes_paginated), which returns each match's title, author, total time and ID. Set `max_results` to limit how many it returns, or leave it unset to get every match.
+Call [`search_recipes_paginated`](../../reference/client.md#nyt_cooking.client.client.Client.search_recipes_paginated), which returns each match's title, author, total time and ID. Set `max_results` to limit how many it returns, or leave it unset to get every match, up to NYT's limit of 960.
 
 ```python
 from nyt_cooking.client import Client

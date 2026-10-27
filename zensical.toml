@@ -9,8 +9,14 @@ extra_css = ["stylesheets/extra.css"]
 nav = [
   { "Home" = "index.md" },
   { "Guides" = [
-    { "Install the MCP server" = "guides/install-mcp.md" },
-    { "Install the Python client" = "guides/install-client.md" },
+    { "MCP" = [
+      { "Install" = "guides/mcp/install.md" },
+      { "Set up credentials" = "guides/mcp/credentials.md" },
+    ] },
+    { "Python" = [
+      { "Install" = "guides/python/install.md" },
+      { "Set up credentials" = "guides/python/credentials.md" },
+    ] },
   ] },
   { "Reference" = [
     { "MCP" = "reference/mcp.md" },

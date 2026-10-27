@@ -12,10 +12,12 @@ nav = [
     { "MCP" = [
       { "Install" = "guides/mcp/install.md" },
       { "Set up credentials" = "guides/mcp/credentials.md" },
+      { "Search recipes" = "guides/mcp/search-recipes.md" },
     ] },
     { "Python" = [
       { "Install" = "guides/python/install.md" },
       { "Set up credentials" = "guides/python/credentials.md" },
+      { "Search recipes" = "guides/python/search-recipes.md" },
     ] },
   ] },
   { "Reference" = [

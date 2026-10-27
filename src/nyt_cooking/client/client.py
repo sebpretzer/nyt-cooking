@@ -439,8 +439,10 @@ class Client:
         """Get recipes matching a search query across as many pages as needed.
 
         Calls `search_recipes` page by page until it has `max_results` recipes or
-        reaches the last page, then joins the results. NYT stops at 960 results
-        (20 pages of 48), however many match.
+        reaches the last page, then joins the results without repeats. NYT stops at
+        960 results (20 pages of 48), however many match. When it caps a search, a
+        few of those results only come back after the last page, so this keeps
+        going until a page adds no new recipes.
 
         ??? example "Example"
             ```python
@@ -473,15 +475,24 @@ class Client:
         self._check_max_results(max_results)
         search = partial(self.search_recipes, query, criteria=criteria)
         last = search()
-        results = list(last.results)
+        results = {result.id: result for result in last.results}
         while self._should_fetch_next_page(
             collected=len(results),
             max_results=max_results,
             pagination=last.pagination,
         ):
             last = search(page=last.pagination.page + 1)
-            results.extend(last.results)
-        return last.model_copy(update={"results": results[:max_results]})
+            results |= {r.id: r for r in last.results if r.id not in results}
+        while len(results) < last.pagination.total and (
+            max_results is None or len(results) < max_results
+        ):
+            overflow = search(page=last.pagination.page + 1)
+            new = {r.id: r for r in overflow.results if r.id not in results}
+            if not new:
+                break
+            results |= new
+            last = overflow
+        return last.model_copy(update={"results": list(results.values())[:max_results]})
 
     def get_recipe_box(
         self,

@@ -72,9 +72,11 @@ To see your folders, call [`get_folders`](../../reference/client.md#nyt_cooking.
 from nyt_cooking.client import Client
 
 with Client() as client:
-    for folder in client.get_folders().folders:
+    folders = client.get_folders().folders
+    for folder in folders:
         print(folder)
-    print(client.get_folder_recipes(141592653).recipes[0])
+    weeknight = next(f for f in folders if f.name == "Weeknight Dinners")
+    print(client.get_folder_recipes(weeknight.id).recipes[0])
 ```
 
 which will output:

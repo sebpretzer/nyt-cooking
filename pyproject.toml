@@ -5,7 +5,7 @@ description = "NYT Cooking Client and MCP server"
 authors = [{ name = "Seb Pretzer", email = "quick.creek3304@fastmail.com" }]
 license = { file = "LICENSE" }
 readme = "README.md"
-requires-python = ">=3.13, <3.15"
+requires-python = ">=3.11, <3.16"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -49,7 +49,7 @@ default-groups = ["dev"]
 exclude-newer = "14 days"
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py311"
 
 [tool.ruff.lint]
 select = ["ALL"]

@@ -7,6 +7,9 @@
 #     "pygments>=2.21.0",
 # ]
 #
+# [tool.uv]
+# exclude-newer = "14 days"
+#
 # [tool.uv.sources]
 # nyt-cooking = { path = "..", editable = true }
 # ///

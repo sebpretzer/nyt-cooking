@@ -4,8 +4,7 @@ Install the NYT Cooking Python client with uv.
 
 ??? info "Prerequisites"
 
-    - A paid [NYT Cooking](https://cooking.nytimes.com/) subscription
-    - [uv](https://docs.astral.sh/uv/getting-started/installation/)
+    Make sure you have a paid [NYT Cooking](https://cooking.nytimes.com/) subscription and [uv](https://docs.astral.sh/uv/getting-started/installation/) installed.
 
 ## Install
 

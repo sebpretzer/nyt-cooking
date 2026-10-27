@@ -4,7 +4,7 @@ Save recipes and organize them into folders by asking your assistant.
 
 ??? info "Prerequisites"
 
-    [Set up your credentials](credentials.md) first.
+    Make sure to [set up your credentials](credentials.md) first.
 
 ## List your recipe box
 
@@ -35,9 +35,9 @@ It calls [`get_recipe_box`](../../reference/mcp.md#get_recipe_box), which return
     ...
   ],
   "pagination": {
-    "total": 120,
+    "total": 154,
     "page": 1,
-    "max_page": 3
+    "max_page": 4
   }
 }
 ```

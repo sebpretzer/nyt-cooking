@@ -4,7 +4,7 @@ Find NYT Cooking recipes by asking your assistant.
 
 ??? info "Prerequisites"
 
-    [Set up your credentials](credentials.md) first.
+    Make sure to [set up your credentials](credentials.md) first.
 
 ## Search
 

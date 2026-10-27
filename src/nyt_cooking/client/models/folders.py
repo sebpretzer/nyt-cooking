@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 class Folder(CookingModel):
     """A folder in a user's recipe box."""
 
-    id: int = Field(description="NYT Cooking folder ID, such as `39869445`")
+    id: int = Field(description="NYT Cooking folder ID, such as `14142135`")
     name: PlainText = Field(description="Folder name")
     description: OptionalPlainText = Field(
         default=None,
@@ -64,13 +64,13 @@ class SavedRecipe(CookingModel):
         ```python
         from nyt_cooking.client.models import Folder, SavedRecipe
 
-        stew = Folder(id=38433723, name="Stew")
+        stew = Folder(id=61803398, name="Stew")
         saved = SavedRecipe.model_validate(
             {
                 "id": 4735,
                 "name": "Beef Stew",
                 "saved": True,
-                "collection_ids": [1, 38433723],
+                "collection_ids": [1, 61803398],
             },
             context={"folders": [stew]},
         )

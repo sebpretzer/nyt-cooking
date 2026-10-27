@@ -323,7 +323,9 @@ def _paged_search(
     def respond(request: httpx.Request) -> httpx.Response:
         page = int(request.url.params["page"])
         results = (
-            [{"collection": {"id": page, "name": "Collection"}}]
+            []
+            if page > max_page
+            else [{"collection": {"id": page, "name": "Collection"}}]
             if page in empty_pages
             else [
                 {"recipe": {"id": page * 10 + item, "name": f"Result {item}"}}
@@ -398,7 +400,7 @@ def test_search_recipes_paginated_continues_past_a_page_without_recipes(
     with Client() as client:
         results = client.search_recipes_paginated("soup")
     assert [result.id for result in results.results] == [10, 30]
-    assert [request.url.params["page"] for request in seen] == ["1", "2", "3"]
+    assert [request.url.params["page"] for request in seen] == ["1", "2", "3", "4"]
 
 
 @pytest.mark.parametrize(
@@ -438,6 +440,52 @@ def test_search_recipes_paginated_keeps_filters_on_every_page(site: Site) -> Non
         assert params["time_lte"] == "20"
         assert params["ratings"] == "topRated"
         assert params["sort"] == "rating"
+
+
+def _capped_search(pages: dict[int, list[int]], overflow: list[int]) -> Handler:
+    def respond(request: httpx.Request) -> httpx.Response:
+        page = int(request.url.params["page"])
+        ids = pages.get(page, overflow)
+        return httpx.Response(
+            HTTPStatus.OK,
+            json={
+                "query": request.url.params["q"],
+                "results": [{"recipe": {"id": i, "name": f"Result {i}"}} for i in ids],
+                "pagination": {"total": 5, "page": page, "max_page": len(pages)},
+            },
+        )
+
+    return respond
+
+
+def test_search_recipes_paginated_drops_recipes_repeated_across_pages(
+    site: Site,
+) -> None:
+    site(_capped_search({1: [1, 2], 2: [2, 3, 4, 5]}, overflow=[]))
+    with Client() as client:
+        results = client.search_recipes_paginated("soup")
+    assert [result.id for result in results.results] == [1, 2, 3, 4, 5]
+
+
+def test_search_recipes_paginated_fetches_recipes_past_the_last_page(
+    site: Site,
+) -> None:
+    seen = site(_capped_search({1: [1], 2: [2]}, overflow=[3, 4]))
+    with Client() as client:
+        results = client.search_recipes_paginated("soup")
+    assert [result.id for result in results.results] == [1, 2, 3, 4]
+    assert [request.url.params["page"] for request in seen] == ["1", "2", "3", "4"]
+    assert results.pagination.page == len(seen)
+
+
+def test_search_recipes_paginated_stops_past_the_last_page_at_max_results(
+    site: Site,
+) -> None:
+    seen = site(_capped_search({1: [1], 2: [2]}, overflow=[3, 4]))
+    with Client() as client:
+        results = client.search_recipes_paginated("soup", max_results=3)
+    assert [result.id for result in results.results] == [1, 2, 3]
+    assert [request.url.params["page"] for request in seen] == ["1", "2", "3"]
 
 
 def test_search_recipes_paginated_single_page_makes_one_request(site: Site) -> None:

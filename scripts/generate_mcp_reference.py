@@ -3,7 +3,7 @@
 # requires-python = ">=3.13, <3.15"
 # dependencies = [
 #     "griffe>=2.4.0",
-#     "nyt-cooking",
+#     "nyt-cooking[mcp]",
 #     "pygments>=2.21.0",
 # ]
 #

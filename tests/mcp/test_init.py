@@ -12,7 +12,7 @@ def test_missing_fastmcp_raises_an_actionable_import_error(
     monkeypatch.setitem(sys.modules, "fastmcp", None)
     monkeypatch.delitem(sys.modules, "nyt_cooking.mcp", raising=False)
     monkeypatch.delitem(sys.modules, "nyt_cooking.mcp.server", raising=False)
-    with pytest.raises(ImportError, match=r"uv sync --group mcp"):
+    with pytest.raises(ImportError, match=r"nyt-cooking\[mcp\]"):
         importlib.import_module("nyt_cooking.mcp")
 
 

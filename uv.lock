@@ -991,11 +991,15 @@ name = "nyt-cooking"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "fastmcp" },
     { name = "httpx" },
     { name = "keyring" },
     { name = "pydantic-settings" },
     { name = "typer" },
+]
+
+[package.optional-dependencies]
+mcp = [
+    { name = "fastmcp" },
 ]
 
 [package.dev-dependencies]
@@ -1012,12 +1016,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "fastmcp", specifier = ">=4,<5" },
+    { name = "fastmcp", marker = "extra == 'mcp'", specifier = ">=4,<5" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "keyring", specifier = ">=25.7.0" },
     { name = "pydantic-settings", specifier = ">=2.13.1" },
     { name = "typer", specifier = ">=0.20.1" },
 ]
+provides-extras = ["mcp"]
 
 [package.metadata.requires-dev]
 dev = [

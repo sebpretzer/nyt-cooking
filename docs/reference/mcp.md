@@ -1906,7 +1906,7 @@ Alphabetical, with each folder's ID and number of recipes.
         "description": "A folder in a user's recipe box.",
         "properties": {
           "id": {
-            "description": "NYT Cooking folder ID, such as `39869445`",
+            "description": "NYT Cooking folder ID, such as `14142135`",
             "type": "integer"
           },
           "name": {
@@ -2303,7 +2303,7 @@ Add an empty folder to the user's NYT Cooking recipe box.
   "description": "A folder in a user's recipe box.",
   "properties": {
     "id": {
-      "description": "NYT Cooking folder ID, such as `39869445`",
+      "description": "NYT Cooking folder ID, such as `14142135`",
       "type": "integer"
     },
     "name": {
@@ -2427,7 +2427,7 @@ Rename a folder in the user's NYT Cooking recipe box.
   "description": "A folder in a user's recipe box.",
   "properties": {
     "id": {
-      "description": "NYT Cooking folder ID, such as `39869445`",
+      "description": "NYT Cooking folder ID, such as `14142135`",
       "type": "integer"
     },
     "name": {
@@ -2553,7 +2553,7 @@ The folder's recipes stay saved to the recipe box.
         "description": "A folder in a user's recipe box.",
         "properties": {
           "id": {
-            "description": "NYT Cooking folder ID, such as `39869445`",
+            "description": "NYT Cooking folder ID, such as `14142135`",
             "type": "integer"
           },
           "name": {
@@ -2676,7 +2676,7 @@ Also lists the recipe box folders it is in.
 
 ```json
 {
-  "description": "Whether a recipe is saved to the user's recipe box, and in which folders.\n\nValidates NYT's recipe interactions response, whose `collection_ids` are\nmatched against the user's folders, passed as the `folders` validation\ncontext. IDs that are not among them, such as the hidden collection behind\nthe whole recipe box, are dropped.\n\n??? example \"Example\"\n    ```python\n    from nyt_cooking.client.models import Folder, SavedRecipe\n\n    stew = Folder(id=38433723, name=\"Stew\")\n    saved = SavedRecipe.model_validate(\n        {\n            \"id\": 4735,\n            \"name\": \"Beef Stew\",\n            \"saved\": True,\n            \"collection_ids\": [1, 38433723],\n        },\n        context={\"folders\": [stew]},\n    )\n    print(saved)\n    ```\n\n    will output:\n    ```text\n    Beef Stew [4735]: saved, in Stew\n    ```",
+  "description": "Whether a recipe is saved to the user's recipe box, and in which folders.\n\nValidates NYT's recipe interactions response, whose `collection_ids` are\nmatched against the user's folders, passed as the `folders` validation\ncontext. IDs that are not among them, such as the hidden collection behind\nthe whole recipe box, are dropped.\n\n??? example \"Example\"\n    ```python\n    from nyt_cooking.client.models import Folder, SavedRecipe\n\n    stew = Folder(id=61803398, name=\"Stew\")\n    saved = SavedRecipe.model_validate(\n        {\n            \"id\": 4735,\n            \"name\": \"Beef Stew\",\n            \"saved\": True,\n            \"collection_ids\": [1, 61803398],\n        },\n        context={\"folders\": [stew]},\n    )\n    print(saved)\n    ```\n\n    will output:\n    ```text\n    Beef Stew [4735]: saved, in Stew\n    ```",
   "properties": {
     "id": {
       "description": "NYT Cooking recipe ID, such as `1019049`",
@@ -2696,7 +2696,7 @@ Also lists the recipe box folders it is in.
         "description": "A folder in a user's recipe box.",
         "properties": {
           "id": {
-            "description": "NYT Cooking folder ID, such as `39869445`",
+            "description": "NYT Cooking folder ID, such as `14142135`",
             "type": "integer"
           },
           "name": {
@@ -2847,7 +2847,7 @@ changes nothing.
 
 ```json
 {
-  "description": "Whether a recipe is saved to the user's recipe box, and in which folders.\n\nValidates NYT's recipe interactions response, whose `collection_ids` are\nmatched against the user's folders, passed as the `folders` validation\ncontext. IDs that are not among them, such as the hidden collection behind\nthe whole recipe box, are dropped.\n\n??? example \"Example\"\n    ```python\n    from nyt_cooking.client.models import Folder, SavedRecipe\n\n    stew = Folder(id=38433723, name=\"Stew\")\n    saved = SavedRecipe.model_validate(\n        {\n            \"id\": 4735,\n            \"name\": \"Beef Stew\",\n            \"saved\": True,\n            \"collection_ids\": [1, 38433723],\n        },\n        context={\"folders\": [stew]},\n    )\n    print(saved)\n    ```\n\n    will output:\n    ```text\n    Beef Stew [4735]: saved, in Stew\n    ```",
+  "description": "Whether a recipe is saved to the user's recipe box, and in which folders.\n\nValidates NYT's recipe interactions response, whose `collection_ids` are\nmatched against the user's folders, passed as the `folders` validation\ncontext. IDs that are not among them, such as the hidden collection behind\nthe whole recipe box, are dropped.\n\n??? example \"Example\"\n    ```python\n    from nyt_cooking.client.models import Folder, SavedRecipe\n\n    stew = Folder(id=61803398, name=\"Stew\")\n    saved = SavedRecipe.model_validate(\n        {\n            \"id\": 4735,\n            \"name\": \"Beef Stew\",\n            \"saved\": True,\n            \"collection_ids\": [1, 61803398],\n        },\n        context={\"folders\": [stew]},\n    )\n    print(saved)\n    ```\n\n    will output:\n    ```text\n    Beef Stew [4735]: saved, in Stew\n    ```",
   "properties": {
     "id": {
       "description": "NYT Cooking recipe ID, such as `1019049`",
@@ -2867,7 +2867,7 @@ changes nothing.
         "description": "A folder in a user's recipe box.",
         "properties": {
           "id": {
-            "description": "NYT Cooking folder ID, such as `39869445`",
+            "description": "NYT Cooking folder ID, such as `14142135`",
             "type": "integer"
           },
           "name": {
@@ -3024,7 +3024,7 @@ recipe box and its other folders; it fails if the recipe is not in the folder.
 
 ```json
 {
-  "description": "Whether a recipe is saved to the user's recipe box, and in which folders.\n\nValidates NYT's recipe interactions response, whose `collection_ids` are\nmatched against the user's folders, passed as the `folders` validation\ncontext. IDs that are not among them, such as the hidden collection behind\nthe whole recipe box, are dropped.\n\n??? example \"Example\"\n    ```python\n    from nyt_cooking.client.models import Folder, SavedRecipe\n\n    stew = Folder(id=38433723, name=\"Stew\")\n    saved = SavedRecipe.model_validate(\n        {\n            \"id\": 4735,\n            \"name\": \"Beef Stew\",\n            \"saved\": True,\n            \"collection_ids\": [1, 38433723],\n        },\n        context={\"folders\": [stew]},\n    )\n    print(saved)\n    ```\n\n    will output:\n    ```text\n    Beef Stew [4735]: saved, in Stew\n    ```",
+  "description": "Whether a recipe is saved to the user's recipe box, and in which folders.\n\nValidates NYT's recipe interactions response, whose `collection_ids` are\nmatched against the user's folders, passed as the `folders` validation\ncontext. IDs that are not among them, such as the hidden collection behind\nthe whole recipe box, are dropped.\n\n??? example \"Example\"\n    ```python\n    from nyt_cooking.client.models import Folder, SavedRecipe\n\n    stew = Folder(id=61803398, name=\"Stew\")\n    saved = SavedRecipe.model_validate(\n        {\n            \"id\": 4735,\n            \"name\": \"Beef Stew\",\n            \"saved\": True,\n            \"collection_ids\": [1, 61803398],\n        },\n        context={\"folders\": [stew]},\n    )\n    print(saved)\n    ```\n\n    will output:\n    ```text\n    Beef Stew [4735]: saved, in Stew\n    ```",
   "properties": {
     "id": {
       "description": "NYT Cooking recipe ID, such as `1019049`",
@@ -3044,7 +3044,7 @@ recipe box and its other folders; it fails if the recipe is not in the folder.
         "description": "A folder in a user's recipe box.",
         "properties": {
           "id": {
-            "description": "NYT Cooking folder ID, such as `39869445`",
+            "description": "NYT Cooking folder ID, such as `14142135`",
             "type": "integer"
           },
           "name": {

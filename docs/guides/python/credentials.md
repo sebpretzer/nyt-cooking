@@ -4,7 +4,7 @@ Give the Python client your NYT Cooking cookie.
 
 ??? info "Prerequisites"
 
-    [Install the Python client](install.md) first.
+    Make sure you [install the Python client](install.md) first.
 
 ## Find your cookie
 

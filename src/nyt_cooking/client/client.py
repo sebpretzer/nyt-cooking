@@ -515,7 +515,7 @@ class Client:
 
             will output:
             ```text
-            total=218 page=1 max_page=73
+            total=154 page=1 max_page=52
             ```
 
         Args:
@@ -567,7 +567,7 @@ class Client:
 
             will output:
             ```text
-            50 total=218 page=2 max_page=5
+            50 total=154 page=2 max_page=4
             ```
 
         Args:
@@ -611,7 +611,7 @@ class Client:
             from nyt_cooking.client import Client
 
             with Client() as client:
-                stew = client.get_folder_recipes(38433723)
+                stew = client.get_folder_recipes(61803398)
             print([recipe.name for recipe in stew.recipes])
             ```
 
@@ -621,7 +621,7 @@ class Client:
             ```
 
         Args:
-            folder_id (int | str): NYT Cooking folder ID, such as `38433723`.
+            folder_id (int | str): NYT Cooking folder ID, such as `61803398`.
 
         Returns:
             RecipeBox: The folder's recipes.
@@ -644,7 +644,7 @@ class Client:
 
             will output:
             ```text
-            Chicken Dinners (28 recipes) [43932270]
+            Chicken Dinners (28 recipes) [27182818]
             ```
 
         Returns:
@@ -675,7 +675,7 @@ class Client:
 
             will output:
             ```text
-            https://cooking.nytimes.com/recipe-box/138753082
+            https://cooking.nytimes.com/recipe-box/141592653
             ```
 
         Args:
@@ -697,17 +697,17 @@ class Client:
             from nyt_cooking.client import Client
 
             with Client() as client:
-                folder = client.rename_folder(138753082, "Quick Dinners")
+                folder = client.rename_folder(141592653, "Quick Dinners")
             print(folder)
             ```
 
             will output:
             ```text
-            Quick Dinners (0 recipes) [138753082]
+            Quick Dinners (0 recipes) [141592653]
             ```
 
         Args:
-            folder_id (int | str): NYT Cooking folder ID, such as `138753082`.
+            folder_id (int | str): NYT Cooking folder ID, such as `141592653`.
             name (str): New name for the folder.
 
         Returns:
@@ -732,7 +732,7 @@ class Client:
             from nyt_cooking.client import Client
 
             with Client() as client:
-                folders = client.delete_folder(138753082)
+                folders = client.delete_folder(141592653)
             print(len(folders.folders))
             ```
 
@@ -742,7 +742,7 @@ class Client:
             ```
 
         Args:
-            folder_id (int | str): NYT Cooking folder ID, such as `138753082`.
+            folder_id (int | str): NYT Cooking folder ID, such as `141592653`.
 
         Returns:
             Folders: The folders left in the recipe box.
@@ -800,7 +800,7 @@ class Client:
             from nyt_cooking.client import Client
 
             with Client() as client:
-                print(client.save_recipe(1019049, folder_id=38433723))
+                print(client.save_recipe(1019049, folder_id=61803398))
             ```
 
             will output:
@@ -839,7 +839,7 @@ class Client:
             from nyt_cooking.client import Client
 
             with Client() as client:
-                print(client.unsave_recipe(1019049, folder_id=38433723))
+                print(client.unsave_recipe(1019049, folder_id=61803398))
             ```
 
             will output:

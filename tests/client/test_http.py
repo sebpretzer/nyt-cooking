@@ -475,6 +475,7 @@ def test_search_recipes_paginated_fetches_recipes_past_the_last_page(
         results = client.search_recipes_paginated("soup")
     assert [result.id for result in results.results] == [1, 2, 3, 4]
     assert [request.url.params["page"] for request in seen] == ["1", "2", "3", "4"]
+    assert results.pagination.page == len(seen)
 
 
 def test_search_recipes_paginated_stops_past_the_last_page_at_max_results(

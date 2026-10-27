@@ -486,12 +486,11 @@ class Client:
         while len(results) < last.pagination.total and (
             max_results is None or len(results) < max_results
         ):
-            overflow = search(page=last.pagination.page + 1)
-            new = {r.id: r for r in overflow.results if r.id not in results}
+            last = search(page=last.pagination.page + 1)
+            new = {r.id: r for r in last.results if r.id not in results}
             if not new:
                 break
             results |= new
-            last = overflow
         return last.model_copy(update={"results": list(results.values())[:max_results]})
 
     def get_recipe_box(

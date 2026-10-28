@@ -25,6 +25,9 @@ nav = [
       { "Contributing" = "CONTRIBUTING.md" },
     ] },
   ] },
+  { "Explanations" = [
+    { "Code conventions" = "explanations/code-conventions.md" },
+  ] },
   { "Reference" = [
     { "MCP" = "reference/mcp.md" },
     { "Client" = "reference/client.md" },

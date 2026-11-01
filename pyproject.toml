@@ -36,16 +36,20 @@ build-backend = "uv_build"
 dev = [
     "griffe-pydantic>=1.0.0",
     "mkdocstrings[python]>=0.28.1",
-    "pre-commit>=4.1.0",
+    "prek>=0.3.6",
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
     "ruff>=0.11.2",
-    "ty>=0.0.11",
     "zensical>=0.0.60",
+]
+mypy = [
+    "mypy>=1.15.0",
+    "ty>=0.0.11",
+    "types-pygments>=2.21.0.20260819",
 ]
 
 [tool.uv]
-default-groups = ["dev"]
+default-groups = "all"
 exclude-newer = "14 days"
 
 [tool.ruff]
@@ -96,6 +100,31 @@ per-file-ignores = [
 allow-init-docstring = true
 ignore-private-args = true
 skip-checking-short-docstrings = false
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+strict = true
+
+# Switch all rules to `strict = false` after
+# https://github.com/python/mypy/issues/11401
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_any_generics = false
+disallow_subclassing_any = false
+disallow_untyped_calls = false
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+disallow_untyped_decorators = false
+warn_unused_ignores = false
+warn_return_any = false
+no_implicit_reexport = false
+strict_equality = false
+extra_checks = false
 
 [tool.ty.environment]
 python = ".venv"

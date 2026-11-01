@@ -30,7 +30,7 @@ class Folder(CookingModel):
         description="Number of recipes in the folder",
     )
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def url(self) -> str:
         """Folder page in the recipe box on cooking.nytimes.com."""

@@ -1,20 +1,27 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+  # basic checks
+  - repo: builtin
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: check-yaml
         args: [--unsafe]
       - id: check-toml
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
       - id: name-tests-test
         args: [--pytest-test-first]
+
+  # docs checks
   - repo: https://github.com/executablebooks/mdformat
     rev: 1.0.0
     hooks:
       - id: mdformat
+        # Do not switch to mdformat --exclude until: https://github.com/hukkin/mdformat/issues/489
         exclude: |
           (?x)^(
+            docs/CODE_OF_CONDUCT\.md |
             docs/reference/.*\.md |
             \.github/.*\.md
           )$
@@ -34,6 +41,8 @@ repos:
     hooks:
       - id: typos
         args: [--force-exclude]
+
+  # python checks
   - repo: https://github.com/abravalheri/validate-pyproject
     rev: "0.26"
     hooks:
@@ -50,6 +59,8 @@ repos:
         args: [--fix]
       - id: ruff-format
         name: ruff-format
+  # Remove this after rules are added to ruff
+  # https://github.com/astral-sh/ruff/issues/12434
   - repo: https://github.com/pycqa/flake8
     rev: 7.4.1
     hooks:
@@ -58,13 +69,27 @@ repos:
         additional_dependencies:
           - Flake8-pyproject==1.2.3
           - pydoclint==0.6.6
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.414
+    hooks:
+      - id: pyright
   - repo: local
     hooks:
+      # Remove this once ty has proper pre-commit support
+      # https://github.com/astral-sh/ty/issues/269
       - id: ty
         name: ty
         entry: uv run ty check
         language: system
         types: [python]
+        require_serial: true
+        pass_filenames: false
+      - id: mypy
+        name: mypy
+        entry: uv run --no-active mypy
+        language: system
+        types: [python]
+        args: [--config-file, pyproject.toml, .]
         require_serial: true
         pass_filenames: false
       - id: generate-mcp-reference

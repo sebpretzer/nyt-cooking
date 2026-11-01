@@ -76,7 +76,8 @@ class Ingredients(RootModel[list[IngredientGroup]]):
         Returns:
             list[dict[str, Any]]: One dictionary per group.
         """
-        return self.model_dump(mode="json")
+        groups: list[dict[str, Any]] = self.model_dump(mode="json")
+        return groups
 
     def to_string(self) -> str:
         """Render the ingredients as a plain-text list.
@@ -187,7 +188,8 @@ class Steps(RootModel[list[StepGroup]]):
         Returns:
             list[dict[str, Any]]: One dictionary per group.
         """
-        return self.model_dump(mode="json")
+        groups: list[dict[str, Any]] = self.model_dump(mode="json")
+        return groups
 
     def to_string(self) -> str:
         """Render the steps as plain text.

@@ -27,6 +27,7 @@ nav = [
   ] },
   { "Explanations" = [
     { "Code conventions" = "explanations/code-conventions.md" },
+    { "Search limitations" = "explanations/search-limitations.md" },
   ] },
   { "Reference" = [
     { "MCP" = "reference/mcp.md" },

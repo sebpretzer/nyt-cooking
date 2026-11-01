@@ -30,7 +30,7 @@ class SearchResult(CookingModel):
     image: Image | None = Field(default=None, description="Recipe photo")
     has_video: bool = Field(default=False, description="Whether a video exists")
 
-    @computed_field
+    @computed_field  # type: ignore[prop-decorator]
     @property
     def url(self) -> str:
         """Recipe page on cooking.nytimes.com."""

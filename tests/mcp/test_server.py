@@ -723,7 +723,7 @@ class TestAuth:
         self,
         identity_requests: list[httpx.Request],
     ) -> None:
-        calls = (("get_auth_status", {}),) * 3
+        calls: tuple[tuple[str, dict[str, Any]], ...] = (("get_auth_status", {}),) * 3
         _call_over_mcp(*calls)
         assert len(identity_requests) == len(calls)
 

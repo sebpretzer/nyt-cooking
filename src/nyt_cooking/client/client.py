@@ -180,7 +180,8 @@ class Client:
             )
             raise ValueError(msg)
         response.raise_for_status()
-        return payload["data"]
+        data: dict[str, Any] = payload["data"]
+        return data
 
     def get_recipe(self, recipe_id: int | str) -> Recipe:
         """Get a full recipe, including its ingredients and steps.

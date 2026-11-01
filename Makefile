@@ -6,12 +6,12 @@ install-python:
 
 install:
 	uv sync --all-extras
-	uv run pre-commit install
+	uv run prek install -f
 
 install-all: install-uv install-python install
 
 lint:
-	uv run pre-commit run --all-files --verbose
+	uv run prek run --all-files --verbose
 
 test: install
 	rm -rf htmlcov

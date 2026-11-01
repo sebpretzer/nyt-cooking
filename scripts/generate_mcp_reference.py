@@ -150,7 +150,8 @@ def _object_schema(schema: dict[str, Any]) -> dict[str, Any] | None:
     """
     if schema.get("type") == "object" and "properties" in schema:
         return schema
-    for option in schema.get("anyOf", []):
+    options: list[dict[str, Any]] = schema.get("anyOf", [])
+    for option in options:
         if option.get("type") == "object" and "properties" in option:
             return option
     return None
@@ -302,7 +303,8 @@ def _signature(doc: ToolDoc) -> str:
     else:
         body = "".join(f"    {param},\n" for param in params)
         text = f"{doc.tool.name}(\n{body}) -> {return_name}"
-    code = highlight(text, PythonLexer(), HtmlFormatter(nowrap=True)).rstrip("\n")
+    formatter: HtmlFormatter[str] = HtmlFormatter(nowrap=True)
+    code = highlight(text, PythonLexer(), formatter).rstrip("\n")
     linked = f'<autoref identifier="{doc.returns}" optional>{return_name}</autoref>'
     head, _, tail = code.rpartition(return_name)
     code = f"{head}{linked}{tail}"

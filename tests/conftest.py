@@ -14,7 +14,6 @@ from keyring.backend import KeyringBackend
 from keyring.backends import fail
 from keyring.errors import PasswordDeleteError
 
-from nyt_cooking.client import client as client_module
 from nyt_cooking.client.settings import CredentialStore, Settings
 
 if TYPE_CHECKING:
@@ -157,8 +156,7 @@ def site(
             return handler(request)
 
         monkeypatch.setattr(
-            client_module.httpx,
-            "Client",
+            "nyt_cooking.client.client.httpx.Client",
             partial(httpx.Client, transport=httpx.MockTransport(recording)),
         )
         return seen

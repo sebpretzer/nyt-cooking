@@ -6,7 +6,7 @@ install-python:
 
 install:
 	uv sync --all-extras
-	uv run prek install
+	uv run prek install -f
 
 install-all: install-uv install-python install
 

@@ -28,6 +28,7 @@ nav = [
   { "Explanations" = [
     { "Code conventions" = "explanations/code-conventions.md" },
     { "Search limitations" = "explanations/search-limitations.md" },
+    { "How nyt-cooking talks to NYT Cooking" = "explanations/talking-to-nyt-cooking.md" },
   ] },
   { "Reference" = [
     { "MCP" = "reference/mcp.md" },

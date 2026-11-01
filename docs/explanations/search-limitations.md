@@ -12,7 +12,7 @@ To avoid this, narrow the search until `total` is under 960. Tags, time limits a
 
 ## Collections, repeats and overflow
 
-NYT's search results include collections, curated groups of recipes, alongside recipes. nyt-cooking returns only recipes, so a page can hold fewer recipes than the page size, and `total`, which counts collections too, can be a little higher than the number of recipes you get back.
+NYT's search results include collections, curated groups of recipes, alongside recipes. `nyt-cooking` returns only recipes, so a page can hold fewer recipes than the page size, and `total`, which counts collections too, can be a little higher than the number of recipes you get back.
 
 Larger searches can also repeat a few recipes across pages. And when a search hits the cap, NYT puts some extra recipes on the page after the last one, roughly one for each collection in the results.
 
@@ -22,4 +22,4 @@ So paging through a search yourself can return repeats and, for capped searches,
 
 ??? note "Why a search returns fewer recipes than `total`"
 
-    `total` counts collections and repeated recipes. Once nyt-cooking leaves out collections and drops repeats, a search ends up with a few less unique recipes than `total` reports.
+    `total` counts collections and repeated recipes. Once `nyt-cooking` leaves out collections and drops repeats, a search ends up with a few less unique recipes than `total` reports.

@@ -44,7 +44,7 @@ When you are ready to submit your changes, you can [open a pull request](#openin
 
 In order to contribute to the codebase, please go through the [issue tracker](https://github.com/sebpretzer/nyt-cooking/issues?q=is%3Aissue%20state%3Aopen+label%3Abug%2Cenhancement) to find an issue that you can work on. If you don't find an issue, you can [create a bug report](https://github.com/sebpretzer/nyt-cooking/issues/new?template=bug.yaml) or [feature request](https://github.com/sebpretzer/nyt-cooking/issues/new?template=feature.yaml).
 
-Fork the repository and create a new branch for your changes. Set up your local environment with `make install`. Once you are done editing, run the linters with `make lint` and the tests with `make test`.
+Fork the repository and create a new branch for your changes. Set up your local environment with `make install`. Once you are done editing, run the linters with `make lint` and the tests with `make test`. `make lint` fixes what it can in place, so commit those fixes too: CI runs the same checks but does not push fixes for you.
 
 Once all tests pass on your machine, you can [open a pull request](#opening-a-pull-request).
 

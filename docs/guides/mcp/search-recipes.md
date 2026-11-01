@@ -46,6 +46,8 @@ It calls [`search_recipes`](../../reference/mcp.md#search_recipes), which return
 }
 ```
 
+NYT returns at most 960 recipes for a search, so narrow broad searches to get complete results. See [Search limitations](../../explanations/search-limitations.md) for why.
+
 ## Narrow the results
 
 Ask for limits in the same request, such as:

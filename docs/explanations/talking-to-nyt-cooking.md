@@ -20,8 +20,6 @@ These APIs aren't officially supported by NYT, as the [disclaimer](../index.md) 
 
 `nyt-cooking` signs in with the `NYT-S` session cookie from a browser signed in to cooking.nytimes.com. It takes only the cookie, not your username or password, and sends it with every request. To find and save yours, see the credentials guides for [Python](../guides/python/credentials.md) and [MCP](../guides/mcp/credentials.md).
 
-A cookie passed straight to `Client` is used for that client only and never saved. If no cookie is passed, set, or saved, loading `Settings` raises a `ValidationError` before any request is made.
-
 ## The subscription check
 
 Before anything else, creating a `Client` asks NYT's identity endpoint who the cookie belongs to. It raises a `ValueError` if:

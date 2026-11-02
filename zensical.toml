@@ -25,10 +25,6 @@ nav = [
       { "Contributing" = "CONTRIBUTING.md" },
     ] },
   ] },
-  { "Explanations" = [
-    { "Code conventions" = "explanations/code-conventions.md" },
-    { "Search limitations" = "explanations/search-limitations.md" },
-  ] },
   { "Reference" = [
     { "MCP" = "reference/mcp.md" },
     { "Client" = "reference/client.md" },
@@ -44,6 +40,11 @@ nav = [
     { "Development" = [
       { "Code of Conduct" = "CODE_OF_CONDUCT.md" },
     ] },
+  ] },
+  { "Explanations" = [
+    { "How nyt-cooking talks to NYT Cooking" = "explanations/talking-to-nyt-cooking.md" },
+    { "Search limitations" = "explanations/search-limitations.md" },
+    { "Code conventions" = "explanations/code-conventions.md" },
   ] },
 ]
 

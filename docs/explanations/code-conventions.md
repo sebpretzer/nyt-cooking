@@ -1,6 +1,6 @@
 # Code conventions
 
-nyt-cooking follows a set of conventions so that its interface is consistent and predictable. All code changes should follow them. They mainly cover how [the client and the MCP server are kept apart](#client-and-mcp-server), the [Pydantic models](#pydantic-models) and the [client structure](#client-structure).
+`nyt-cooking` follows a set of conventions so that its interface is consistent and predictable. All code changes should follow them. They mainly cover how [the client and the MCP server are kept apart](#client-and-mcp-server), the [Pydantic models](#pydantic-models) and the [client structure](#client-structure).
 
 ## Client and MCP server
 

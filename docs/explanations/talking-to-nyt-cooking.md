@@ -1,0 +1,33 @@
+# How `nyt-cooking` talks to NYT Cooking
+
+`nyt-cooking` calls the same endpoints the NYT Cooking website uses, the way a browser signed in to your account would.
+
+## Unofficial APIs
+
+These APIs aren't officially supported by NYT, as the [disclaimer](../index.md) says, so NYT can change them without notice. To look like the website, `nyt-cooking` sends the headers the web app sends, including a browser `User-Agent`. You can override the `User-Agent`, the URLs and the GraphQL headers through [`Settings`](../reference/settings.md).
+
+## Endpoints
+
+`nyt-cooking` talks to three NYT endpoints, depending on what information you're asking for.
+
+| Endpoint prefix                | What it covers                                                                  |
+| ------------------------------ | ------------------------------------------------------------------------------- |
+| `cooking.nytimes.com`          | NYT Cooking's REST API, for recipes, search, the recipe box and folders.        |
+| `samizdat-graphql.nytimes.com` | NYT's GraphQL API, for recipe comments.                                         |
+| `a.nytimes.com`                | NYT's identity endpoint, for the [subscription check](#the-subscription-check). |
+
+## Signing in with a cookie
+
+`nyt-cooking` signs in with the `NYT-S` session cookie from a browser signed in to cooking.nytimes.com. It takes only the cookie, not your username or password, and sends it with every request. To find and save yours, see the credentials guides for [Python](../guides/python/credentials.md) and [MCP](../guides/mcp/credentials.md).
+
+## The subscription check
+
+Before anything else, creating a `Client` asks NYT's identity endpoint who the cookie belongs to. It raises a `ValueError` if:
+
+- NYT doesn't recognise the cookie, usually because it has expired.
+- The account has no active subscription that includes NYT Cooking.
+
+This means a `Client` only exists for a signed-in subscriber with a valid cookie. That's for two reasons:
+
+1. To fail early and loudly, with a clear message, instead of partway through a call.
+1. To make sure `nyt-cooking` supports NYT and its cooking platform, by only working for people who subscribe.
